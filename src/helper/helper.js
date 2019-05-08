@@ -1,23 +1,26 @@
 export function calculateTotal(state) {
-  let total = 0;
-  state.students.forEach((student) => {
-    total += Number(student.paid);
-  })
-  return total
+  // let total = 0;
+  // state.students.forEach((student) => {
+  //   total += Number(student.paid);
+  // })
+  // return total
+  return state.students.reduce((accumulator, currentValue) => {
+    return accumulator + Number(currentValue.paid);
+  }, 0)
 }
 
 export function createCreditorDebtorArrays(state, equalShare) {
-  let creditorsArr = []
-  let debtorsArr = []
+  let creditorsArr = [];
+  let debtorsArr = [];
   state.students.forEach((student) => {
-    student.owes = (equalShare - student.paid)
+    student.owes = (equalShare - student.paid);
     if (student.owes > 0) {
-      debtorsArr.push(student)
+      debtorsArr.push(student);
     } else {
-      creditorsArr.push(student)
+      creditorsArr.push(student);
     }
   })
-  return { creditorsArr, debtorsArr }
+  return { creditorsArr, debtorsArr };
 }
 
 export function outputTripCalculations(creditorsArr, debtorsArr) {

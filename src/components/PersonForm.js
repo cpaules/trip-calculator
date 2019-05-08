@@ -7,6 +7,7 @@ export default class PersonForm extends Component {
     super(props);
 
     this.onSubmit = this.onSubmit.bind(this);
+    // this.handleRemoveStudent = this.handleRemoveStudent.bind(this);
 
     this.state = {
       students: [{ 
@@ -18,20 +19,12 @@ export default class PersonForm extends Component {
     }
   }
 
-  handleStudentNameChange = idx => e => {
-    const newStudents = this.state.students.map((student, sidx) => {
+  handleInputChange = idx => e => {
+    const students = this.state.students.map((student, sidx) => {
       if (idx !== sidx) return student;
-      return { ...student, name: e.target.value };
+      return { ...student, [e.target.name]: e.target.value };
     });
-    this.setState({ students: newStudents });
-  };
-
-  handleStudentPaidChange = idx => e => {
-    const newStudents = this.state.students.map((student, sidx) => {
-      if (idx !== sidx) return student;
-      return { ...student, paid: e.target.value };
-    });
-    this.setState({ students: newStudents });
+    this.setState({ students });
   };
 
   handleAddStudent = () => {
@@ -43,6 +36,11 @@ export default class PersonForm extends Component {
         }])
     });
   };
+
+  handleRemoveStudent(studentToRemove) {
+    const students = this.state.students.filter(student => student !== studentToRemove);
+    this.setState({ students });
+  }
 
   onSubmit(e) {
     e.preventDefault();
@@ -69,8 +67,10 @@ export default class PersonForm extends Component {
                   id={`student${idx + 1}Name`}
                   className="form-control"
                   value={student.name}
-                  onChange={this.handleStudentNameChange(idx)}
+                  name="name"
+                  onChange={this.handleInputChange(idx)}
                 />
+                <input type="button" value="Remove Student" onClick={() => this.handleRemoveStudent(student)} className="btn-sm btn-primary" /> 
               </div>
               <div className="form-group col-md-2" >
                 <input
@@ -79,7 +79,8 @@ export default class PersonForm extends Component {
                   id={`student${idx + 1}Paid`}
                   className="form-control"
                   value={student.paid}
-                  onChange={this.handleStudentPaidChange(idx)}
+                  name="paid"
+                  onChange={this.handleInputChange(idx)}
                 />     
               </div>         
             </div>
